@@ -5,12 +5,15 @@ var searchInput = $('#search-input');
 var searchBtnEl = $('#search-btn');
 
 var cityTitleEl = $('#current-city-title');
+var historyListEl = $('#history-list');
+
 
 var cityName = "";
 var cityState = "";
 var cityCountry = "";
 var cityLat = 0;
 var cityLon = 0;
+var searchHistList = [];
 
 function handleSubmit(event) {
     event.preventDefault();
@@ -61,11 +64,23 @@ function getWeatherIcon(queryWeatherURL) {
         })
         .then(function (data) {
             cityTitleEl.html(cityName + ', ' + cityState + ', ' + cityCountry + " (" + moment().format("MM/DD/YYYY") + ") <img id='currentIcon' src='https://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png' />");
+
+            searchHistList.push({ name: cityName + ', ' + cityState, latitude: cityLat, longitude: cityLon });
+            localStorage.setItem('search-history', JSON.stringify(historyListEl));
+            displaySearchHistory();
+            searchInput.val("");
         })
-        .catch(error => {
-            console.log(error);
+        .catch(function (error) {
+            console.error(error);
         });
 
+}
+
+function displaySearchHistory(){
+    searchHistEl.html("");
+    for (i = 0; i < searchHistList.length; i++) {
+        searchHistEl.prepend('<li class="list-group-item" data-lat="' + searchHistList[i].latitude + '" data-lon="' + searchHistList[i].longitude + '">' + searchHistList[i].name + '</li>');
+    }
 }
 // searchFormEl.addEventListener('submit', handleSubmit);
 searchBtnEl.click(handleSubmit);
