@@ -6,3 +6,20 @@
     background-color: rgb(92, 172, 238);
     color: #ffffff;
 }
+.favorable {
+    width: 100px;
+    background-color: green;
+    color: #fff;
+ }
+ 
+ .moderate {
+    width: 100px;
+    background-color: yellow;
+    color: #000;
+ }
+ 
+ .severe {
+    width: 100px;
+    background-color: red;
+    color: #fff;
+ }

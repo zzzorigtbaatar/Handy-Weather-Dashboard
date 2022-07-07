@@ -91,6 +91,14 @@ function displayWeatherForecast(data){
     $('#currentWind').text(data.current.wind_speed + 'MPH');
     $('#currentHum').text(data.current.humidity + '%');
     $('#currentUVI').html(data.current.uvi);
+    $('#currentUVI').removeClass('favorable moderate severe');
+        if (data.current.uvi > 6) {
+            $('#currentUVI').addClass('severe');
+        } else if (data.current.uvi > 2) {
+            $('#currentUVI').addClass('moderate');
+        } else {
+            $('#currentUVI').addClass('favorable');
+        }
 }
 // searchFormEl.addEventListener('submit', handleSubmit);
 searchBtnEl.click(handleSubmit);
