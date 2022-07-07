@@ -15,13 +15,28 @@
             <h1 class="card-title">Handy Weather Dashboard</h1>
         </div>
     </header>
-    <main class="container-fluid .d-lg-inline-flex mt-4">
+    <main class="container-fluid d-lg-flex mt-4">
         <aside class="col-lg-3">
             <form id="search-form" class="mb-2">
                 <input type="text" class="form-control" id="search-input" placeholder="Search a city name...">
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
+            <ul class="list-group mt-3" id="history-list"></ul>
         </aside>
+        <section class="col-lg-9">
+            <div class="card my-4"></div>
+                <div class="card-body">
+                    <h2 class="card-title" id="current-city-title">
+                        <img id="current-weather-icon">
+                    </h2>
+                    <ul class="list-group card-text" id="current-weather-data">
+                        <li>Temp: <span id="currentTemp"></span></li>
+                        <li>Wind: <span id="currentWind"></span></li>
+                        <li>Humidity: <span id="currentHum"></span></li>
+                        <li>UV Index: <span id="currentUVI"></span></li>
+                    </ul>
+                </div>
+        </section>
     </main>
 </body>
 </html>
