@@ -8,18 +8,33 @@ var cityTitleEl = $('#current-city-title');
 var historyListEl = $('#history-list');
 
 
-var cityName = "";
-var cityState = "";
-var cityCountry = "";
-var cityLat = 0;
-var cityLon = 0;
+var cityName = "San Francisco";
+var cityState = "CA";
+var cityCountry = "USA";
+var cityLat = 37.7790262;
+var cityLon = 122.419906;
 var searchHistList = [];
 
+var defaultURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=37.7790262&lon=-122.419906&units=imperial&APPID=a6b011df2ef4ad0af87f542febbabcd1'
+
 function init(){
-    displaySearchHistory;
+    if (localStorage.getItem('search-history')) {
+  
+        searchHistList = JSON.parse(localStorage.getItem('search-history'));
+        displaysearchHistList();
+        cityTitleEl = searchHistList[searchHistList.length-1].name;
+        var initURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + searchHistList[searchHistList.length-1].latitude + '&lon=' + searchHistList[searchHistList.length-1].longitude + '&units=imperial&APPID=a6b011df2ef4ad0af87f542febbabcd1';
+        
+        getWeatherIcon(initURL);
+    }
+    else {
+        cityTitleEl.html('San Francisco, CA, USA');
+        getWeatherIcon(defaultURL);
+        console.log("checking here")
+    }
 }
 
-
+//listener that hands over user input as parameter in URL
 function handleSubmit(event) {
     event.preventDefault();
 
@@ -36,6 +51,7 @@ function handleSubmit(event) {
     displayLocation(searchQueryURL);
 }
 
+//obtains user's input lat and lon values as parameters in URL
 function displayLocation(searchQueryURL) {
     fetch(searchQueryURL)
         .then(function (response) {
@@ -50,12 +66,9 @@ function displayLocation(searchQueryURL) {
             cityLat = data[0].lat;
             cityLon = data[0].lon;
 
-            var queryWeatherURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + data[0].lat + '&lon=' + data[0].lon + '&units=imperial&APPID=4cf13e749504309d50ec21fe5fae86a6';
+            var queryWeatherURL = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + data[0].lat + '&lon=' + data[0].lon + '&units=imperial&APPID=a6b011df2ef4ad0af87f542febbabcd1';
 
             getWeatherIcon(queryWeatherURL);
-
-
-
         })
         .catch(function (error) {
             console.error(error);
@@ -70,10 +83,9 @@ function getWeatherIcon(queryWeatherURL) {
         })
         .then(function (data) {
             cityTitleEl.html(cityName + ', ' + cityState + ', ' + cityCountry + " (" + moment().format("MM/DD/YYYY") + ") <img id='currentIcon' src='https://openweathermap.org/img/wn/" + data.current.weather[0].icon + "@2x.png' />");
-
             searchHistList.push({ name: cityName + ', ' + cityState, latitude: cityLat, longitude: cityLon });
-            localStorage.setItem('search-history', JSON.stringify(historyListEl));
-            displaySearchHistory();
+            localStorage.setItem('search-history', JSON.stringify(searchHistList));
+            displaysearchHistList();
             displayWeatherForecast(data);
             searchInput.val("");
         })
@@ -83,8 +95,8 @@ function getWeatherIcon(queryWeatherURL) {
 
 }
 
-//displays previous searches if there are any in local storage
-function displaySearchHistory(){
+//displays previous searches and their lat and lon data attributes
+function displaysearchHistList(){
     searchHistEl.html("");
     for (i = 0; i < searchHistList.length; i++) {
         searchHistEl.prepend('<li class="list-group-item" data-lat="' + searchHistList[i].latitude + '" data-lon="' + searchHistList[i].longitude + '">' + searchHistList[i].name + '</li>');
