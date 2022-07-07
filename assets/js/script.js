@@ -57,6 +57,7 @@ function displayLocation(searchQueryURL) {
         });
 }
 
+//displays city name with current weather's icon
 function getWeatherIcon(queryWeatherURL) {
     fetch(queryWeatherURL)
         .then(function (response) {
@@ -68,6 +69,7 @@ function getWeatherIcon(queryWeatherURL) {
             searchHistList.push({ name: cityName + ', ' + cityState, latitude: cityLat, longitude: cityLon });
             localStorage.setItem('search-history', JSON.stringify(historyListEl));
             displaySearchHistory();
+            displayWeatherForecast(data);
             searchInput.val("");
         })
         .catch(function (error) {
@@ -76,11 +78,19 @@ function getWeatherIcon(queryWeatherURL) {
 
 }
 
+//shows previous searches if there are any in local storage
 function displaySearchHistory(){
     searchHistEl.html("");
     for (i = 0; i < searchHistList.length; i++) {
         searchHistEl.prepend('<li class="list-group-item" data-lat="' + searchHistList[i].latitude + '" data-lon="' + searchHistList[i].longitude + '">' + searchHistList[i].name + '</li>');
     }
+}
+
+function displayWeatherForecast(data){
+    $('#currentTemp').text(data.current.temp + '°F');
+    $('#currentWind').text(data.current.wind_speed + 'MPH');
+    $('#currentHum').text(data.current.humidity + '%');
+    $('#currentUVI').html(data.current.uvi);
 }
 // searchFormEl.addEventListener('submit', handleSubmit);
 searchBtnEl.click(handleSubmit);
