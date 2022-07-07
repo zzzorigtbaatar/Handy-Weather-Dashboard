@@ -14,7 +14,7 @@ I couldn't implement the feature to save and present user search history to and 
 
 In order to do this project, I used Server Side APIs such as OpenWeather's One Call API in addition to JQuery, Moment.js, Bootstrap, Javascript, HTML, CSS, git and github.
 
-I can obtain weather data by making an API call to the URL with the parameters `?lat=' + data[0].lat + '&lon=' + data[0].lon`, `&units=imperial`, and my API key `&APPID={obtain API key from openweathermap.org}'`.
+I can obtain weather data by making an API call to the `https://api.openweathermap.org/data/2.5/onecall` URL with the parameters `?lat=' + data[0].lat + '&lon=' + data[0].lon`, `&units=imperial`, and my API key `&APPID={obtain API key from openweathermap.org}'`.
 ```
 //obtains user's input lat and lon values as parameters in URL
 function displayLocation(searchQueryURL) {
