@@ -20,3 +20,10 @@
     background-color: red;
     color: #fff;
  }
+#current-weather-data{
+    margin-left: 20px;
+ }
+ 
+ #currentUVI{
+    padding: 0 20px;
+ }
